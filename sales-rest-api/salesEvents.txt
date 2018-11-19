@@ -1,0 +1,3 @@
+{"productId":"product1","productCategory":"SPORT","saleDate":1542665827094}
+{"productId":"23423","productCategory":"COOKING","saleDate":1542665827094}
+{"productId":"product1","productCategory":"SPORT","saleDate":1542665827094}
