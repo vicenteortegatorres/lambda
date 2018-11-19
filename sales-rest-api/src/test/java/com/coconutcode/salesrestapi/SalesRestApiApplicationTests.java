@@ -5,7 +5,8 @@ import com.coconutcode.salesrestapi.serialization.model.Sale;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.avro.SchemaBuilder;
-import org.apache.avro.io.*;
+import org.apache.avro.file.DataFileReader;
+import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +24,7 @@ import java.util.List;
 @SpringBootTest
 public class SalesRestApiApplicationTests {
 
-    public static final String FILENAME = "salesEvents.txt";
+    private static final String FILENAME = "salesEvents.txt";
 
     @Test
 	public void contextLoads() {
@@ -36,9 +38,13 @@ public class SalesRestApiApplicationTests {
 		sale1.setSaleDate(System.currentTimeMillis());
         sale1.setProductId("23423");
 
-		serialize(Arrays.asList(sale, sale1, sale));
+        val file = new File(FILENAME);
 
-        deserialize();
+		serialize(Arrays.asList(sale, sale1, sale), file);
+
+        val sales = deserialize(file);
+
+        sales.forEach(System.out::println);
     }
 
     private String generateSchema() {
@@ -54,69 +60,37 @@ public class SalesRestApiApplicationTests {
                 .endRecord().toString();
     }
 
-    private void serialize(List<Sale> sales) {
-		DatumWriter<Sale> writer = new SpecificDatumWriter<>(Sale.class);
-		try {
-			val fop = new FileOutputStream(new File(FILENAME));
-			val jsonEncoder = getSaleEncoder(fop);
+    private void serialize(List<Sale> sales, File file) {
+        val saleSpecificDatumWriter = new SpecificDatumWriter<Sale>(Sale.class);
+        val saleDataFileWriter = new DataFileWriter<Sale>(saleSpecificDatumWriter);
+        try {
+            saleDataFileWriter.create(Sale.getClassSchema(), file);
             for (val sale : sales) {
-                writer.write(sale, jsonEncoder);
+                saleDataFileWriter.append(sale);
             }
-            jsonEncoder.flush();
-			fop.flush();
-			fop.close();
 		} catch (IOException e) {
-			log.error("Serialization error:" + e.getMessage());
-		}
+			log.error("Serialization error:", e);
+		} finally {
+            try {
+                saleDataFileWriter.close();
+            } catch (IOException e) {
+                log.error("Error closing file",  e);
+            }
+        }
 	}
 
-    private void deserialize() {
-        BufferedReader br = null;
-        FileReader fr = null;
-
+    private ArrayList<Sale> deserialize(File file) {
+        val sales = new ArrayList<Sale>();
+        val saleSpecificDatumReader = new SpecificDatumReader<Sale>(Sale.getClassSchema());
         try {
-
-            //br = new BufferedReader(new FileReader(FILENAME));
-            fr = new FileReader(FILENAME);
-            br = new BufferedReader(fr);
-
-            String sCurrentLine;
-
-            while ((sCurrentLine = br.readLine()) != null) {
-
-                DatumReader<Sale> reader
-                        = new SpecificDatumReader<>(Sale.class);
-                Decoder decoder = null;
-
-                    decoder = DecoderFactory.get().jsonDecoder(
-                            Sale.getClassSchema(), new String(sCurrentLine));
-                    Sale a = reader.read(null, decoder);
-                    System.out.println(a);
+            val saleDataFileReader = new DataFileReader<Sale>(file, saleSpecificDatumReader);
+            while (saleDataFileReader.hasNext()) {
+                val sale = saleDataFileReader.next();
+                sales.add(sale);
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-
-                if (br != null)
-                    br.close();
-
-                if (fr != null)
-                    fr.close();
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-
-            }
-
+            log.error("Error reading file:", e);
         }
-
+        return sales;
     }
-
-    private JsonEncoder getSaleEncoder(FileOutputStream fop) throws IOException {
-        return EncoderFactory.get().jsonEncoder(Sale.getClassSchema(), fop);
-    }
-
-
 }
