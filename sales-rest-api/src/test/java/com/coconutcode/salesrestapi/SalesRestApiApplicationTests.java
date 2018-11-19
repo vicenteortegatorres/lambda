@@ -15,9 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -39,12 +40,15 @@ public class SalesRestApiApplicationTests {
         sale1.setProductId("23423");
 
         val file = new File(FILENAME);
+        try {
+            serialize(Arrays.asList(sale, sale1, sale), file);
 
-		serialize(Arrays.asList(sale, sale1, sale), file);
+            val sales = deserialize(file);
 
-        val sales = deserialize(file);
-
-        sales.forEach(System.out::println);
+            sales.forEach(System.out::println);
+        } catch (Exception e) {
+            log.error("Error ", e);
+        }
     }
 
     private String generateSchema() {
@@ -60,37 +64,26 @@ public class SalesRestApiApplicationTests {
                 .endRecord().toString();
     }
 
-    private void serialize(List<Sale> sales, File file) {
-        val saleSpecificDatumWriter = new SpecificDatumWriter<Sale>(Sale.class);
-        val saleDataFileWriter = new DataFileWriter<Sale>(saleSpecificDatumWriter);
-        try {
-            saleDataFileWriter.create(Sale.getClassSchema(), file);
-            for (val sale : sales) {
-                saleDataFileWriter.append(sale);
-            }
-		} catch (IOException e) {
-			log.error("Serialization error:", e);
-		} finally {
-            try {
-                saleDataFileWriter.close();
-            } catch (IOException e) {
-                log.error("Error closing file",  e);
-            }
+    private void serialize(List<Sale> sales, File file) throws IOException {
+        val saleDataFileWriter = getSaleDataFileWriter(file);
+        for (Sale sale : sales) {
+            saleDataFileWriter.append(sale);
         }
+        saleDataFileWriter.close();
 	}
 
-    private ArrayList<Sale> deserialize(File file) {
-        val sales = new ArrayList<Sale>();
-        val saleSpecificDatumReader = new SpecificDatumReader<Sale>(Sale.getClassSchema());
-        try {
-            val saleDataFileReader = new DataFileReader<Sale>(file, saleSpecificDatumReader);
-            while (saleDataFileReader.hasNext()) {
-                val sale = saleDataFileReader.next();
-                sales.add(sale);
-            }
-        } catch (IOException e) {
-            log.error("Error reading file:", e);
-        }
-        return sales;
+    private DataFileWriter<Sale> getSaleDataFileWriter(File file) throws IOException {
+        val saleDataFileWriter = new DataFileWriter<Sale>(new SpecificDatumWriter<>(Sale.class));
+        saleDataFileWriter.create(Sale.getClassSchema(), file);
+        return saleDataFileWriter;
+    }
+
+    private List<Sale> deserialize(File file) throws IOException {
+        return StreamSupport.stream(getSaleDataFileReader(file).spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    private DataFileReader<Sale> getSaleDataFileReader(File file) throws IOException {
+        return new DataFileReader<>(file, new SpecificDatumReader<>(Sale.getClassSchema()));
     }
 }
