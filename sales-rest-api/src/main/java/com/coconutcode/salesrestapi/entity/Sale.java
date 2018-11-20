@@ -1,4 +1,4 @@
-package com.coconutcode.salesrestapi.model;
+package com.coconutcode.salesrestapi.entity;
 
 import lombok.Data;
 

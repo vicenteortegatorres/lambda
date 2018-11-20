@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.coconutcode.salesrestapi.serialization.model;
+package com.coconutcode.salesrestapi.infrastructure.persistence.model;
 
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Sale extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -4411511273950231909L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Sale\",\"namespace\":\"com.coconutcode.salesrestapi.serialization.model\",\"fields\":[{\"name\":\"productId\",\"type\":\"string\"},{\"name\":\"productCategory\",\"type\":{\"type\":\"enum\",\"name\":\"ProductCategory\",\"symbols\":[\"GARDEN\",\"KITCHEN\",\"COOKING\",\"FOOD\",\"DRINK\",\"SPORT\",\"FASHION\",\"FURNITURE\"]}},{\"name\":\"saleDate\",\"type\":\"long\"}]}");
+  private static final long serialVersionUID = 8095175910221974561L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Sale\",\"namespace\":\"com.coconutcode.salesrestapi.infrastructure.serialization.entity\",\"fields\":[{\"name\":\"productId\",\"type\":\"string\"},{\"name\":\"productCategory\",\"type\":{\"type\":\"enum\",\"name\":\"ProductCategory\",\"symbols\":[\"GARDEN\",\"KITCHEN\",\"COOKING\",\"FOOD\",\"DRINK\",\"SPORT\",\"FASHION\",\"FURNITURE\"]}},{\"name\":\"saleDate\",\"type\":\"long\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -52,7 +52,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
   }
 
   @Deprecated public java.lang.CharSequence productId;
-  @Deprecated public com.coconutcode.salesrestapi.serialization.model.ProductCategory productCategory;
+  @Deprecated public ProductCategory productCategory;
   @Deprecated public long saleDate;
 
   /**
@@ -68,7 +68,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
    * @param productCategory The new value for productCategory
    * @param saleDate The new value for saleDate
    */
-  public Sale(java.lang.CharSequence productId, com.coconutcode.salesrestapi.serialization.model.ProductCategory productCategory, java.lang.Long saleDate) {
+  public Sale(java.lang.CharSequence productId, ProductCategory productCategory, java.lang.Long saleDate) {
     this.productId = productId;
     this.productCategory = productCategory;
     this.saleDate = saleDate;
@@ -90,7 +90,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: productId = (java.lang.CharSequence)value$; break;
-    case 1: productCategory = (com.coconutcode.salesrestapi.serialization.model.ProductCategory)value$; break;
+    case 1: productCategory = (ProductCategory)value$; break;
     case 2: saleDate = (java.lang.Long)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
@@ -116,7 +116,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
    * Gets the value of the 'productCategory' field.
    * @return The value of the 'productCategory' field.
    */
-  public com.coconutcode.salesrestapi.serialization.model.ProductCategory getProductCategory() {
+  public ProductCategory getProductCategory() {
     return productCategory;
   }
 
@@ -124,7 +124,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
    * Sets the value of the 'productCategory' field.
    * @param value the value to set.
    */
-  public void setProductCategory(com.coconutcode.salesrestapi.serialization.model.ProductCategory value) {
+  public void setProductCategory(ProductCategory value) {
     this.productCategory = value;
   }
 
@@ -148,8 +148,8 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
    * Creates a new Sale RecordBuilder.
    * @return A new Sale RecordBuilder
    */
-  public static com.coconutcode.salesrestapi.serialization.model.Sale.Builder newBuilder() {
-    return new com.coconutcode.salesrestapi.serialization.model.Sale.Builder();
+  public static Sale.Builder newBuilder() {
+    return new Sale.Builder();
   }
 
   /**
@@ -157,8 +157,8 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
    * @param other The existing builder to copy.
    * @return A new Sale RecordBuilder
    */
-  public static com.coconutcode.salesrestapi.serialization.model.Sale.Builder newBuilder(com.coconutcode.salesrestapi.serialization.model.Sale.Builder other) {
-    return new com.coconutcode.salesrestapi.serialization.model.Sale.Builder(other);
+  public static Sale.Builder newBuilder(Sale.Builder other) {
+    return new Sale.Builder(other);
   }
 
   /**
@@ -166,8 +166,8 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
    * @param other The existing instance to copy.
    * @return A new Sale RecordBuilder
    */
-  public static com.coconutcode.salesrestapi.serialization.model.Sale.Builder newBuilder(com.coconutcode.salesrestapi.serialization.model.Sale other) {
-    return new com.coconutcode.salesrestapi.serialization.model.Sale.Builder(other);
+  public static Sale.Builder newBuilder(Sale other) {
+    return new Sale.Builder(other);
   }
 
   /**
@@ -177,7 +177,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
     implements org.apache.avro.data.RecordBuilder<Sale> {
 
     private java.lang.CharSequence productId;
-    private com.coconutcode.salesrestapi.serialization.model.ProductCategory productCategory;
+    private ProductCategory productCategory;
     private long saleDate;
 
     /** Creates a new Builder */
@@ -189,7 +189,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.coconutcode.salesrestapi.serialization.model.Sale.Builder other) {
+    private Builder(Sale.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.productId)) {
         this.productId = data().deepCopy(fields()[0].schema(), other.productId);
@@ -209,7 +209,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
      * Creates a Builder by copying an existing Sale instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.coconutcode.salesrestapi.serialization.model.Sale other) {
+    private Builder(Sale other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.productId)) {
         this.productId = data().deepCopy(fields()[0].schema(), other.productId);
@@ -238,7 +238,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       * @param value The value of 'productId'.
       * @return This builder.
       */
-    public com.coconutcode.salesrestapi.serialization.model.Sale.Builder setProductId(java.lang.CharSequence value) {
+    public Sale.Builder setProductId(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.productId = value;
       fieldSetFlags()[0] = true;
@@ -258,7 +258,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       * Clears the value of the 'productId' field.
       * @return This builder.
       */
-    public com.coconutcode.salesrestapi.serialization.model.Sale.Builder clearProductId() {
+    public Sale.Builder clearProductId() {
       productId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -268,7 +268,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       * Gets the value of the 'productCategory' field.
       * @return The value.
       */
-    public com.coconutcode.salesrestapi.serialization.model.ProductCategory getProductCategory() {
+    public ProductCategory getProductCategory() {
       return productCategory;
     }
 
@@ -277,7 +277,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       * @param value The value of 'productCategory'.
       * @return This builder.
       */
-    public com.coconutcode.salesrestapi.serialization.model.Sale.Builder setProductCategory(com.coconutcode.salesrestapi.serialization.model.ProductCategory value) {
+    public Sale.Builder setProductCategory(ProductCategory value) {
       validate(fields()[1], value);
       this.productCategory = value;
       fieldSetFlags()[1] = true;
@@ -297,7 +297,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       * Clears the value of the 'productCategory' field.
       * @return This builder.
       */
-    public com.coconutcode.salesrestapi.serialization.model.Sale.Builder clearProductCategory() {
+    public Sale.Builder clearProductCategory() {
       productCategory = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -316,7 +316,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       * @param value The value of 'saleDate'.
       * @return This builder.
       */
-    public com.coconutcode.salesrestapi.serialization.model.Sale.Builder setSaleDate(long value) {
+    public Sale.Builder setSaleDate(long value) {
       validate(fields()[2], value);
       this.saleDate = value;
       fieldSetFlags()[2] = true;
@@ -336,7 +336,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       * Clears the value of the 'saleDate' field.
       * @return This builder.
       */
-    public com.coconutcode.salesrestapi.serialization.model.Sale.Builder clearSaleDate() {
+    public Sale.Builder clearSaleDate() {
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -347,7 +347,7 @@ public class Sale extends org.apache.avro.specific.SpecificRecordBase implements
       try {
         Sale record = new Sale();
         record.productId = fieldSetFlags()[0] ? this.productId : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.productCategory = fieldSetFlags()[1] ? this.productCategory : (com.coconutcode.salesrestapi.serialization.model.ProductCategory) defaultValue(fields()[1]);
+        record.productCategory = fieldSetFlags()[1] ? this.productCategory : (ProductCategory) defaultValue(fields()[1]);
         record.saleDate = fieldSetFlags()[2] ? this.saleDate : (java.lang.Long) defaultValue(fields()[2]);
         return record;
       } catch (java.lang.Exception e) {

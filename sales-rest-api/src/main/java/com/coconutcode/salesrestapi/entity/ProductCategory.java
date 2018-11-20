@@ -1,4 +1,4 @@
-package com.coconutcode.salesrestapi.model;
+package com.coconutcode.salesrestapi.entity;
 
 public enum ProductCategory {
     GARDEN, KITCHEN, COOKING, FOOD, DRINK, SPORT, FASHION, FURNITURE

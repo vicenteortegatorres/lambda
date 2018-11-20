@@ -1,7 +1,7 @@
 package com.coconutcode.salesrestapi;
 
-import com.coconutcode.salesrestapi.serialization.model.ProductCategory;
-import com.coconutcode.salesrestapi.serialization.model.Sale;
+import com.coconutcode.salesrestapi.infrastructure.persistence.model.ProductCategory;
+import com.coconutcode.salesrestapi.infrastructure.persistence.model.Sale;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.avro.SchemaBuilder;
@@ -53,7 +53,7 @@ public class SalesRestApiApplicationTests {
 
     private String generateSchema() {
         return SchemaBuilder.record("Sale")
-                .namespace("com.coconutcode.salesrestapi.serialization.model")
+                .namespace("com.coconutcode.salesrestapi.serialization.entity")
                 .fields().requiredString("productId")
                 .name("productCategory")
                 .type()
