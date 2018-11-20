@@ -29,19 +29,21 @@ public class SalesRestApiApplicationTests {
 
     @Test
 	public void contextLoads() {
-		Sale sale = new Sale();
+		val sale = new Sale();
 		sale.setProductCategory(ProductCategory.SPORT);
 		sale.setSaleDate(System.currentTimeMillis());
 		sale.setProductId("product1");
 
-        Sale sale1 = new Sale();
+        val sale1 = new Sale();
 		sale1.setProductCategory(ProductCategory.COOKING);
 		sale1.setSaleDate(System.currentTimeMillis());
         sale1.setProductId("23423");
 
         val file = new File(FILENAME);
         try {
-            serialize(Arrays.asList(sale, sale1, sale), file);
+            for (Sale s : Arrays.asList(sale, sale1, sale)) {
+                serialize(s, file);
+            }
 
             val sales = deserialize(file);
 
@@ -64,26 +66,31 @@ public class SalesRestApiApplicationTests {
                 .endRecord().toString();
     }
 
-    private void serialize(List<Sale> sales, File file) throws IOException {
+    private void serialize(Sale sale, File file) throws IOException {
         val saleDataFileWriter = getSaleDataFileWriter(file);
-        for (Sale sale : sales) {
-            saleDataFileWriter.append(sale);
-        }
+        saleDataFileWriter.append(sale);
         saleDataFileWriter.close();
 	}
 
     private DataFileWriter<Sale> getSaleDataFileWriter(File file) throws IOException {
-        val saleDataFileWriter = new DataFileWriter<Sale>(new SpecificDatumWriter<>(Sale.class));
-        saleDataFileWriter.create(Sale.getClassSchema(), file);
+        val saleDataFileWriter = new DataFileWriter<Sale>(new SpecificDatumWriter<>(Sale.getClassSchema()));
+        createOrAppend(file, saleDataFileWriter);
         return saleDataFileWriter;
     }
 
+    private void createOrAppend(File file, DataFileWriter<Sale> saleDataFileWriter) throws IOException {
+        if(file.exists()) {
+            saleDataFileWriter.appendTo(file);
+        } else {
+            saleDataFileWriter.create(Sale.getClassSchema(), file);
+        }
+    }
+
     private List<Sale> deserialize(File file) throws IOException {
-        return StreamSupport.stream(getSaleDataFileReader(file).spliterator(), false)
-                .collect(Collectors.toList());
+        return StreamSupport.stream( getSaleDataFileReader(file).spliterator(), false).collect(Collectors.toList());
     }
 
     private DataFileReader<Sale> getSaleDataFileReader(File file) throws IOException {
-        return new DataFileReader<>(file, new SpecificDatumReader<>(Sale.getClassSchema()));
+        return new DataFileReader<>(file, new SpecificDatumReader<>(Sale.class));
     }
 }

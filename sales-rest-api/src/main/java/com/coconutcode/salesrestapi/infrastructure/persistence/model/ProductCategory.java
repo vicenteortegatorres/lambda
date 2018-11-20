@@ -8,6 +8,6 @@ package com.coconutcode.salesrestapi.infrastructure.persistence.model;
 @org.apache.avro.specific.AvroGenerated
 public enum ProductCategory {
   GARDEN, KITCHEN, COOKING, FOOD, DRINK, SPORT, FASHION, FURNITURE  ;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"ProductCategory\",\"namespace\":\"com.coconutcode.salesrestapi.infrastructure.serialization.entity\",\"symbols\":[\"GARDEN\",\"KITCHEN\",\"COOKING\",\"FOOD\",\"DRINK\",\"SPORT\",\"FASHION\",\"FURNITURE\"]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"ProductCategory\",\"namespace\":\"com.coconutcode.salesrestapi.infrastructure.persistence.model\",\"symbols\":[\"GARDEN\",\"KITCHEN\",\"COOKING\",\"FOOD\",\"DRINK\",\"SPORT\",\"FASHION\",\"FURNITURE\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 }
