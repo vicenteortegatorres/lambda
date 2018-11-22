@@ -2,7 +2,8 @@ package com.coconutcode.salesrestapi.service;
 
 import com.coconutcode.salesrestapi.entity.Sale;
 
+import java.util.List;
 
-public interface StoreSale {
-    void save(Sale sale);
+public interface GetStoredSales {
+    List<Sale> getAll();
 }
