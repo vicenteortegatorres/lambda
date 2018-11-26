@@ -2,8 +2,8 @@ package com.coconutcode.salesrestapi.infrastructure.persistence;
 
 import com.coconutcode.salesrestapi.service.GetStoredSales;
 import com.coconutcode.salesrestapi.service.SaleStorer;
-import com.coconutcode.salesrestapi.infrastructure.persistence.model.Sale;
-import com.coconutcode.salesrestapi.infrastructure.persistence.model.ProductCategory;
+import com.coconutcode.infrastructure.persistence.model.Sale;
+import com.coconutcode.infrastructure.persistence.model.ProductCategory;
 import lombok.val;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
@@ -79,7 +79,7 @@ public class SaleRepository implements SaleStorer, GetStoredSales {
     }
 
     private List<Sale> deserialize(File file) throws IOException {
-        return StreamSupport.stream( getSaleDataFileReader(file).spliterator(), false)
+        return StreamSupport.stream(getSaleDataFileReader(file).spliterator(), false)
                 .collect(Collectors.toList());
     }
 
