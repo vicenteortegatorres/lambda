@@ -1,6 +1,6 @@
-package com.coconutcode.infrastructure.persistence.model;
+package com.coconutcode.salesbatchservice.persistence.mondodb;
 
-import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -8,15 +8,20 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
-@Data
 public class ProductDayView implements Serializable {
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    @Id
+    private String id;
     private String productId;
     private String data;
 
     public ProductDayView(String productId, long timestamp) {
         this.productId = productId;
         this.data = getDay(timestamp);
+    }
+
+    public ProductDayView() {
 
     }
 

@@ -1,8 +1,9 @@
 package com.coconutcode.salesbatchservice;
 
 import com.coconutcode.infrastructure.persistence.model.ProductCategory;
-import com.coconutcode.infrastructure.persistence.model.ProductDayView;
 import com.coconutcode.infrastructure.persistence.model.Sale;
+import com.coconutcode.salesbatchservice.persistence.mondodb.ProductDayView;
+import com.coconutcode.salesbatchservice.persistence.mondodb.ProductDayViewRepository;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.avro.file.DataFileReader;
@@ -14,6 +15,7 @@ import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -25,12 +27,12 @@ import java.util.stream.StreamSupport;
 import org.apache.spark.SparkConf;
 import scala.Tuple2;
 
-import javax.sound.midi.SysexMessage;
-
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class SalesBatchServiceApplicationTests {
+    @Autowired
+    private ProductDayViewRepository productDayViewRepository;
 
 	@Test
 	public void contextLoads() {
@@ -63,6 +65,10 @@ public class SalesBatchServiceApplicationTests {
 
 			log.info("nProduct " + nProduct);
 			log.info("nCategoties " + nCategoties);
+
+            productDayViewRepository.saveAll(nProduct.stream().map(s->s._1).collect(Collectors.toList()));
+
+            productDayViewRepository.findAll();
 		} catch (IOException e) {
 			log.error("Error creating batch views: ", e);
 		}
