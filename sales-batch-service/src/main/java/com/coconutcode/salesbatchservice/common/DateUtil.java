@@ -1,4 +1,4 @@
-package com.coconutcode.salesbatchservice.util;
+package com.coconutcode.salesbatchservice.common;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;

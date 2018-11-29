@@ -1,6 +1,7 @@
-package com.coconutcode.salesbatchservice.persistence.sales;
+package com.coconutcode.salesbatchservice.infrastructure.persistence.sales;
 
 import com.coconutcode.infrastructure.persistence.model.Sale;
+import com.coconutcode.salesbatchservice.service.GetSalesEvents;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,11 +14,12 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Component
-public class SaleRepository {
+public class SaleRepository implements GetSalesEvents {
 
     @Value("${store.filename:}")
     private String fileName;
 
+    @Override
     public List<Sale> getSales() throws IOException {
         return deserialize(new File(fileName));
     }

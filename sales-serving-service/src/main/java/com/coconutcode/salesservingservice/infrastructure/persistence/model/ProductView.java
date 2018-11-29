@@ -1,6 +1,5 @@
-package com.coconutcode.salesbatchservice.persistence.views.model;
+package com.coconutcode.salesservingservice.infrastructure.persistence.model;
 
-import com.coconutcode.salesbatchservice.util.DateUtil;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -16,11 +15,6 @@ public class ProductView implements Serializable {
     private String day;
     private long units;
     private ViewType viewType;
-
-    public ProductView(String productId, long timestamp) {
-        this.topic = productId;
-        this.day = DateUtil.getDay(timestamp);
-    }
 
     public ProductView() {
 
