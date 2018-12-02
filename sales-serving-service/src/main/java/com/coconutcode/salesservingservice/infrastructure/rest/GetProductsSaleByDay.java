@@ -2,8 +2,8 @@ package com.coconutcode.salesservingservice.infrastructure.rest;
 
 import com.coconutcode.salesservingservice.infrastructure.rest.model.ProductSaleByDay;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface GetProductsSaleByDay {
-    List<ProductSaleByDay> getProductsSaleByDay();
+    Optional<ProductSaleByDay> getProductsSaleByDay(String productId, String day);
 }

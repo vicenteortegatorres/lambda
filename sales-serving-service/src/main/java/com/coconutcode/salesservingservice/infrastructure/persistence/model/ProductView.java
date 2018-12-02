@@ -1,36 +1,46 @@
 package com.coconutcode.salesservingservice.infrastructure.persistence.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.Optional;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class ProductView implements Serializable {
 
     @Id
-    private String id;
-    private String topic;
-    private String day;
+    private CompositeKey id;
+
     private long units;
     private ViewType viewType;
 
-    public ProductView() {
-
+    public CompositeKey getId() {
+        if(!Optional.ofNullable(id).isPresent()) {
+            id = new CompositeKey();
+        }
+        return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductView that = (ProductView) o;
-        return Objects.equals(topic, that.topic) &&
-                Objects.equals(day, that.day);
+    public void setTopic(String topic) {
+        this.getId().setTopic(topic);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(topic, day);
+    public String getTopic() {
+        return this.getId().getTopic();
+    }
+
+    public void setDay(String day) {
+        this.getId().setDay(day);
+    }
+
+    public String getDay() {
+        return this.getId().getDay();
     }
 }

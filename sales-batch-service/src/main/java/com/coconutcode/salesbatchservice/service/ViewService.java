@@ -1,5 +1,6 @@
 package com.coconutcode.salesbatchservice.service;
 
+import com.coconutcode.infrastructure.persistence.model.ProductCategory;
 import com.coconutcode.infrastructure.persistence.model.Sale;
 import com.coconutcode.salesbatchservice.infrastructure.persistence.sales.SaleRepository;
 import com.coconutcode.salesbatchservice.infrastructure.persistence.views.ProductsByDayViewRepository;
@@ -61,6 +62,25 @@ public class ViewService {
         val sparkConf = new SparkConf().setMaster(LOCAL).setAppName(APP_NAME);
         val sc = new JavaSparkContext(sparkConf);
         val sales = saleRepository.getSales();
+
+        Sale e = new Sale();
+        e.setProductId("dsadas");
+        e.setProductCategory(ProductCategory.KITCHEN);
+        e.setSaleDate(System.currentTimeMillis());
+        sales.add(e);
+
+        Sale e1 = new Sale();
+        e1.setProductId("gazpacho");
+        e1.setProductCategory(ProductCategory.DRINK);
+        e1.setSaleDate(System.currentTimeMillis());
+        sales.add(e1);
+
+        Sale e2 = new Sale();
+        e2.setProductId("gazpacho2");
+        e2.setProductCategory(ProductCategory.DRINK);
+        e2.setSaleDate(System.currentTimeMillis());
+        sales.add(e2);
+
         return sc.parallelize(sales);
     }
 

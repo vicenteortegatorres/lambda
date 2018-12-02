@@ -5,8 +5,8 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class ProductSaleByDay {
-    private String productId;
+public class CategoriesByDay {
+    private String category;
     private String day;
     private long units;
 }
